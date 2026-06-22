@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qlass — Education ERP Login</title>
+  <meta name="description" content="Sign in to Qlass Education ERP Admin Dashboard. Manage classes, students, teachers, and academic operations.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='8' fill='%232563EB'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='Inter' font-weight='800' font-size='20'>Q</text></svg>">
+</head>
+<body>
+  <div class="auth-layout" id="authLayout">
+    <!-- LEFT: Illustration Side -->
+    <div class="auth-illustration">
+      <div class="auth-shape auth-shape-1"></div>
+      <div class="auth-shape auth-shape-2"></div>
+      <div class="auth-shape auth-shape-3"></div>
+
+      <div class="auth-illustration-content">
+        <!-- SVG Illustration: Teachers, Students, Analytics -->
+        <svg width="320" height="240" viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 32px; opacity: 0.95;">
+          <!-- Classroom Board -->
+          <rect x="60" y="20" width="200" height="120" rx="12" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <rect x="80" y="40" width="70" height="8" rx="4" fill="rgba(255,255,255,0.2)"/>
+          <rect x="80" y="56" width="50" height="6" rx="3" fill="rgba(255,255,255,0.12)"/>
+          <rect x="80" y="70" width="60" height="6" rx="3" fill="rgba(255,255,255,0.12)"/>
+          <!-- Chart -->
+          <rect x="170" y="38" width="72" height="52" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <rect x="182" y="72" width="8" height="14" rx="2" fill="rgba(37,99,235,0.5)"/>
+          <rect x="196" y="62" width="8" height="24" rx="2" fill="rgba(34,197,94,0.5)"/>
+          <rect x="210" y="55" width="8" height="31" rx="2" fill="rgba(139,92,246,0.5)"/>
+          <rect x="224" y="65" width="8" height="21" rx="2" fill="rgba(245,158,11,0.5)"/>
+          <!-- Analytics line -->
+          <rect x="80" y="92" width="160" height="32" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <polyline points="92,112 110,104 128,110 146,100 164,106 182,96 200,102 218,94 228,98" stroke="rgba(37,99,235,0.6)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Teacher figure -->
+          <circle cx="40" cy="170" r="16" fill="rgba(139,92,246,0.3)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+          <circle cx="40" cy="165" r="6" fill="rgba(255,255,255,0.3)"/>
+          <path d="M28 186 Q40 178 52 186" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none"/>
+          <!-- Student figures -->
+          <circle cx="120" cy="180" r="12" fill="rgba(37,99,235,0.25)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <circle cx="120" cy="176" r="5" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="160" cy="185" r="12" fill="rgba(34,197,94,0.25)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <circle cx="160" cy="181" r="5" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="200" cy="178" r="12" fill="rgba(245,158,11,0.25)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <circle cx="200" cy="174" r="5" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="240" cy="182" r="12" fill="rgba(239,68,68,0.2)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <circle cx="240" cy="178" r="5" fill="rgba(255,255,255,0.25)"/>
+          <!-- Connecting dots -->
+          <circle cx="80" cy="195" r="3" fill="rgba(255,255,255,0.1)"/>
+          <circle cx="280" cy="170" r="4" fill="rgba(255,255,255,0.08)"/>
+          <circle cx="290" cy="210" r="2" fill="rgba(255,255,255,0.1)"/>
+          <!-- Book icon -->
+          <rect x="260" y="150" width="28" height="22" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <line x1="274" y1="152" x2="274" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        </svg>
+
+        <h2>Empowering Education<br>with Smart Analytics</h2>
+        <p>Manage classes, track student performance, and drive academic excellence with data-driven insights.</p>
+
+        <div class="auth-stats">
+          <div class="auth-stat-card">
+            <div class="auth-stat-value">12K+</div>
+            <div class="auth-stat-label">Students</div>
+          </div>
+          <div class="auth-stat-card">
+            <div class="auth-stat-value">450+</div>
+            <div class="auth-stat-label">Teachers</div>
+          </div>
+          <div class="auth-stat-card">
+            <div class="auth-stat-value">98%</div>
+            <div class="auth-stat-label">Uptime</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Auth Form Side -->
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <!-- Logo -->
+        <div class="auth-logo">
+          <div class="auth-logo-icon">Q</div>
+          <span class="auth-logo-text">Qlass</span>
+        </div>
+
+        <!-- ==========================================
+             AUTH SCREEN CONTAINER (swappable screens)
+             ========================================== -->
+        <div id="authScreens">
+
+          <!-- SCREEN 1: LOGIN -->
+          <div class="auth-screen active" id="screen-login">
+            <h1 class="auth-heading">Welcome back</h1>
+            <p class="auth-subheading">Sign in to your account to continue</p>
+
+            <!-- Alert area -->
+            <div id="login-alert" class="auth-alert-area" style="display:none;"></div>
+
+            <!-- Role Selector -->
+            <div class="role-selector" id="roleSelector">
+              <button class="role-option active" data-role="admin" type="button">Admin</button>
+              <button class="role-option" data-role="teacher" type="button">Teacher</button>
+              <button class="role-option" data-role="student" type="button">Student</button>
+            </div>
+
+            <form class="auth-form" id="loginForm" novalidate>
+              <!-- Email / Mobile -->
+              <div class="form-group">
+                <label class="form-label" for="loginEmail">Email or Mobile Number <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <input type="text" class="form-input" id="loginEmail" placeholder="admin@qlass.edu" autocomplete="email" required>
+                </div>
+                <div class="form-error" id="loginEmailError" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <span></span>
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="form-group">
+                <label class="form-label" for="loginPassword">Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+                  <button type="button" class="input-suffix" id="togglePassword" aria-label="Show password">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-open"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-closed" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+                <div class="form-error" id="loginPasswordError" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <span></span>
+                </div>
+              </div>
+
+              <!-- Remember Me & Forgot -->
+              <div class="auth-actions">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="rememberMe">
+                  <label for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" id="goForgotPassword">Forgot password?</a>
+              </div>
+
+              <!-- Captcha indicator -->
+              <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--color-bg-secondary);border-radius:var(--radius-lg);font-size:12px;color:var(--color-text-secondary);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Protected by reCAPTCHA
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginBtn">
+                <span class="btn-text">Continue</span>
+              </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider" style="margin:20px 0;">Or continue with</div>
+
+            <!-- Alt Methods -->
+            <div class="auth-alt-methods">
+              <button class="btn btn-secondary btn-block" id="goEmailOtp" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Sign in using Email OTP
+              </button>
+              <button class="btn btn-secondary btn-block" id="goSmsOtp" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Sign in using SMS OTP
+              </button>
+            </div>
+
+            <div class="auth-footer">
+              Don't have an account? <a href="#" id="goCreateAccount">Create account</a>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: OTP VERIFICATION -->
+          <div class="auth-screen" id="screen-otp">
+            <a href="#" class="auth-back" id="otpBack" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-secondary);margin-bottom:24px;font-weight:500;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back to login
+            </a>
+            <h1 class="auth-heading">Verify your identity</h1>
+            <p class="auth-subheading">We've sent a 6-digit code to <strong id="otpTarget">admin@qlass.edu</strong></p>
+
+            <div id="otp-alert" class="auth-alert-area" style="display:none;"></div>
+
+            <form class="auth-form" id="otpForm" novalidate>
+              <div class="form-group" style="align-items:center;">
+                <div class="otp-inputs" id="otpInputs">
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 1" autofocus>
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 2">
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 3">
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 4">
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 5">
+                  <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 6">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="verifyOtpBtn">
+                <span class="btn-text">Verify Code</span>
+              </button>
+
+              <p style="text-align:center;font-size:13px;color:var(--color-text-secondary);">
+                Didn't receive a code? <a href="#" id="resendOtp" style="font-weight:600;">Resend</a>
+                <span id="otpTimer" style="color:var(--color-text-tertiary);"></span>
+              </p>
+            </form>
+          </div>
+
+          <!-- SCREEN 3: FORGOT PASSWORD -->
+          <div class="auth-screen" id="screen-forgot">
+            <a href="#" class="auth-back" id="forgotBack" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-secondary);margin-bottom:24px;font-weight:500;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back to login
+            </a>
+            <h1 class="auth-heading">Forgot password?</h1>
+            <p class="auth-subheading">Enter your email and we'll send you a reset link.</p>
+
+            <div id="forgot-alert" class="auth-alert-area" style="display:none;"></div>
+
+            <form class="auth-form" id="forgotForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="forgotEmail">Email address <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <input type="email" class="form-input" id="forgotEmail" placeholder="admin@qlass.edu" autocomplete="email" required>
+                </div>
+                <div class="form-error" id="forgotEmailError" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <span></span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="forgotBtn">
+                <span class="btn-text">Send Reset Link</span>
+              </button>
+            </form>
+
+            <div class="auth-footer">
+              Remember your password? <a href="#" id="forgotToLogin">Sign in</a>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: RESET PASSWORD -->
+          <div class="auth-screen" id="screen-reset">
+            <h1 class="auth-heading">Reset your password</h1>
+            <p class="auth-subheading">Enter a new password for your account.</p>
+
+            <div id="reset-alert" class="auth-alert-area" style="display:none;"></div>
+
+            <form class="auth-form" id="resetForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="newPassword">New Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <input type="password" class="form-input" id="newPassword" placeholder="Create a strong password" required>
+                  <button type="button" class="input-suffix toggle-pw" aria-label="Show password">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+                <div class="password-strength" id="pwStrength">
+                  <div class="strength-bar" id="str1"></div>
+                  <div class="strength-bar" id="str2"></div>
+                  <div class="strength-bar" id="str3"></div>
+                  <div class="strength-bar" id="str4"></div>
+                </div>
+                <div class="strength-text" id="pwStrengthText"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <div class="form-error" id="confirmPasswordError" style="display:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <span></span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="resetBtn">
+                <span class="btn-text">Reset Password</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- SCREEN 5: CREATE ACCOUNT -->
+          <div class="auth-screen" id="screen-register">
+            <a href="#" class="auth-back" id="registerBack" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-secondary);margin-bottom:24px;font-weight:500;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back to login
+            </a>
+            <h1 class="auth-heading">Create your account</h1>
+            <p class="auth-subheading">Join Qlass to manage your institution.</p>
+
+            <div id="register-alert" class="auth-alert-area" style="display:none;"></div>
+
+            <form class="auth-form" id="registerForm" novalidate>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="form-group">
+                  <label class="form-label" for="regFirstName">First Name <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="regFirstName" placeholder="John" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="regLastName">Last Name <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="regLastName" placeholder="Doe" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="regEmail">Email <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <input type="email" class="form-input" id="regEmail" placeholder="you@institution.edu" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="regMobile">Mobile Number <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <input type="tel" class="form-input" id="regMobile" placeholder="+91 98765 43210" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="regInstitution">Institution Name</label>
+                <input type="text" class="form-input" id="regInstitution" placeholder="Delhi Public School">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="regRole">Role</label>
+                <select class="form-select" id="regRole">
+                  <option value="admin">Admin</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="regPassword">Password <span class="required">*</span></label>
+                <div class="input-wrapper">
+                  <span class="input-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <input type="password" class="form-input" id="regPassword" placeholder="Min. 8 characters" required>
+                </div>
+              </div>
+
+              <div class="checkbox-wrapper">
+                <input type="checkbox" id="agreeTerms">
+                <label for="agreeTerms">I agree to the <a href="#" style="font-weight:600;">Terms of Service</a> and <a href="#" style="font-weight:600;">Privacy Policy</a></label>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="registerBtn">
+                <span class="btn-text">Create Account</span>
+              </button>
+            </form>
+
+            <div class="auth-footer">
+              Already have an account? <a href="#" id="registerToLogin">Sign in</a>
+            </div>
+          </div>
+
+          <!-- SCREEN 6a: SESSION EXPIRED -->
+          <div class="auth-screen" id="screen-session-expired">
+            <div class="auth-status-screen">
+              <div class="auth-status-icon warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h1 class="auth-heading">Session Expired</h1>
+              <p class="auth-subheading" style="margin-bottom:32px;">Your session has timed out for security reasons. Please sign in again to continue.</p>
+              <button class="btn btn-primary btn-block btn-lg" id="sessionToLogin" type="button">
+                <span class="btn-text">Sign In Again</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SCREEN 6b: ACCOUNT LOCKED -->
+          <div class="auth-screen" id="screen-locked">
+            <div class="auth-status-screen">
+              <div class="auth-status-icon danger">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h1 class="auth-heading">Account Locked</h1>
+              <p class="auth-subheading" style="margin-bottom:16px;">Your account has been temporarily locked due to multiple failed login attempts.</p>
+              <div class="auth-alert auth-alert-warning" style="margin-bottom:24px;text-align:left;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Please try again after <strong>15 minutes</strong> or contact your administrator to unlock your account.</span>
+              </div>
+              <button class="btn btn-secondary btn-block btn-lg" id="lockedToLogin" type="button">
+                <span class="btn-text">Back to Login</span>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /authScreens -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
