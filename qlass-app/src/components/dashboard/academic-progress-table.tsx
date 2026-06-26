@@ -5,6 +5,7 @@ import { DashboardCard } from "./dashboard-card";
 import { ProgressBar } from "./progress-bar";
 import { cn } from "@/lib/utils";
 import { Search, ChevronLeft, ChevronRight, ArrowUpDown, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import type { AcademicProgressRow, ProgressStatus } from "@/types/dashboard";
 
 interface AcademicProgressTableProps {
@@ -93,10 +94,10 @@ export function AcademicProgressTable({ data }: AcademicProgressTableProps) {
       noPadding
       delay={0.2}
       action={
-        <button className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors">
+        <Link href="/admin/academic-progress" className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors">
           View Detailed Progress
           <ExternalLink className="w-3.5 h-3.5" />
-        </button>
+        </Link>
       }
     >
       {/* Search */}
@@ -124,7 +125,6 @@ export function AcademicProgressTable({ data }: AcademicProgressTableProps) {
               <SortHeader field="className">Class</SortHeader>
               <SortHeader field="subject">Subject</SortHeader>
               <SortHeader field="syllabusProgress">Syllabus</SortHeader>
-              <SortHeader field="courseProgress">Course</SortHeader>
               <SortHeader field="lectureCompletion">Lectures</SortHeader>
               <th className="text-left text-[11px] font-semibold text-slate-500 dark:text-slate-400 pb-3 pt-3 pr-3 whitespace-nowrap">
                 Topics
@@ -158,14 +158,6 @@ export function AcademicProgressTable({ data }: AcademicProgressTableProps) {
                       <ProgressBar value={row.syllabusProgress} size="sm" className="flex-1" />
                       <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 tabular-nums">
                         {row.syllabusProgress}%
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-3 pr-3 min-w-[120px]">
-                    <div className="flex items-center gap-2">
-                      <ProgressBar value={row.courseProgress} size="sm" className="flex-1" />
-                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 tabular-nums">
-                        {row.courseProgress}%
                       </span>
                     </div>
                   </td>

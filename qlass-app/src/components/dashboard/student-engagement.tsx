@@ -21,13 +21,20 @@ export function StudentEngagement({ data }: StudentEngagementProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  const activePerc = data.totalStudents ? (data.activeStudents / data.totalStudents) * 100 : 0;
-  const inactivePerc = data.totalStudents ? (data.inactiveStudents / data.totalStudents) * 100 : 0;
+  const activePercRaw = data.totalStudents ? (data.activeStudents / data.totalStudents) * 100 : 0;
+  const inactivePercRaw = data.totalStudents ? (data.inactiveStudents / data.totalStudents) * 100 : 0;
+
+  // Add a small visual gap between segments if both exist
+  const gap = activePercRaw > 0 && inactivePercRaw > 0 ? 1.5 : 0;
+  const scale = (100 - 2 * gap) / 100;
+  
+  const activePerc = activePercRaw * scale;
+  const inactivePerc = inactivePercRaw * scale;
 
   const activeOffset = circumference - (activePerc / 100) * circumference;
-  const inactiveArc = (inactivePerc / 100) * circumference;
-  const inactiveOffset = circumference - inactiveArc;
-  const inactiveRotation = (activePerc / 100) * 360;
+  const inactiveOffset = circumference - (inactivePerc / 100) * circumference;
+
+  const inactiveRotation = ((activePerc + gap) / 100) * 360;
 
   return (
     <DashboardCard title="Student Engagement Overview" delay={0.3}>
@@ -52,7 +59,6 @@ export function StudentEngagement({ data }: StudentEngagementProps) {
               fill="none"
               stroke="#10B981"
               strokeWidth={strokeWidth}
-              strokeLinecap="round"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: activeOffset }}
@@ -66,7 +72,6 @@ export function StudentEngagement({ data }: StudentEngagementProps) {
               fill="none"
               stroke="#EF4444"
               strokeWidth={strokeWidth}
-              strokeLinecap="round"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: inactiveOffset }}

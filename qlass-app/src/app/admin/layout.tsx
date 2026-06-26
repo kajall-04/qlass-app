@@ -5,6 +5,8 @@ import { Sidebar, type NavSection } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { useSidebarStore } from "@/store/sidebar-store";
 import { cn } from "@/lib/utils";
+import { Chatbot } from "@/components/chatbot/Chatbot";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 import {
   LayoutDashboard, BookOpen, Users, GraduationCap, Video,
   FileText, ClipboardCheck, BarChart3, Brain, Bell,
@@ -24,7 +26,8 @@ const adminNav: NavSection[] = [
   {
     title: "Academics",
     items: [
-      { label: "Lectures", href: "/admin/lectures", icon: Video },
+      { label: "Lesson Plan", href: "/admin/lesson-plan", icon: BookOpen }, // Assuming there's a Lesson Plan placeholder as well, but wait, the mockup has it. Let me just add Classroom Audit.
+      { label: "Classroom Audit", href: "/admin/classroom-audit", icon: ClipboardCheck },
       { label: "DPP", href: "/admin/dpp", icon: FileText, badge: "45" },
       { label: "Tests", href: "/admin/tests", icon: ClipboardCheck },
     ],
@@ -58,7 +61,6 @@ const pageTitles: Record<string, string> = {
   "/admin/classes": "Classes",
   "/admin/students": "Students",
   "/admin/teachers": "Teachers",
-  "/admin/lectures": "Lectures",
   "/admin/dpp": "Daily Practice Problems",
   "/admin/tests": "Tests & Examinations",
   "/admin/reports": "Reports",
@@ -69,12 +71,18 @@ const pageTitles: Record<string, string> = {
   "/admin/notifications": "Notifications",
   "/admin/settings": "Settings",
   "/admin/profile": "Profile",
+  "/admin/classroom-audit": "Classroom Audit",
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { isChecking } = useAuthGuard("admin");
   const pathname = usePathname();
   const collapsed = useSidebarStore((s) => s.collapsed);
   const title = pageTitles[pathname] || "Dashboard";
+
+  if (isChecking) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
@@ -90,6 +98,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {children}
         </div>
       </main>
+      <Chatbot role="admin" />
     </div>
   );
 }

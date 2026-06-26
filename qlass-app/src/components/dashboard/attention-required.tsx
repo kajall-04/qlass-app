@@ -6,6 +6,7 @@ import {
   AlertTriangle, BookOpen, Video, UserMinus,
   FileText, ChevronRight,
 } from "lucide-react";
+import Link from "next/link";
 import type { AlertItem, AlertSeverity, AlertCategory } from "@/types/dashboard";
 
 interface AttentionRequiredProps {
@@ -80,19 +81,19 @@ export function AttentionRequired({ data }: AttentionRequiredProps) {
               </div>
 
               {/* Action */}
-              <button className="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+              <Link href="/admin/students" className="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
                 Review
-              </button>
+              </Link>
             </div>
           );
         })}
       </div>
 
       {/* View All */}
-      <button className="w-full mt-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-1">
+      <Link href="/admin/notifications" className="w-full mt-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-1">
         View All Alerts
         <ChevronRight className="w-3.5 h-3.5" />
-      </button>
+      </Link>
     </DashboardCard>
   );
 }

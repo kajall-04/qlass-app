@@ -29,6 +29,9 @@ interface SidebarProps {
 export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: SidebarProps) {
   const pathname = usePathname();
   const { collapsed, mobileOpen, toggle, setMobileOpen } = useSidebarStore();
+  
+  // Force full width on mobile regardless of desktop collapsed state
+  const isCollapsed = collapsed && !mobileOpen;
 
   return (
     <>
@@ -49,16 +52,16 @@ export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: Side
       <aside
         className={cn(
           "fixed top-0 left-0 h-full z-50 flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300",
-          collapsed ? "w-[72px]" : "w-[260px]",
+          isCollapsed ? "w-[72px]" : "w-[260px]",
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         {/* Header */}
-        <div className={cn("flex items-center gap-3 px-5 h-16 border-b border-slate-100 dark:border-slate-800 shrink-0", collapsed && "justify-center px-0")}>
+        <div className={cn("flex items-center gap-3 px-5 h-16 border-b border-slate-100 dark:border-slate-800 shrink-0", isCollapsed && "justify-center px-0")}>
           <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center shrink-0", roleColor)}>
             <span className="text-white font-extrabold text-base">Q</span>
           </div>
-          {!collapsed && (
+          {!isCollapsed && (
             <div className="overflow-hidden">
               <div className="text-base font-bold text-slate-900 dark:text-white tracking-tight">Qlass</div>
               <div className="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">{roleLabel}</div>
@@ -77,7 +80,7 @@ export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: Side
         <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
           {sections.map((section) => (
             <div key={section.title}>
-              {!collapsed && (
+              {!isCollapsed && (
                 <div className="px-3 mb-2 text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                   {section.title}
                 </div>
@@ -93,14 +96,14 @@ export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: Side
                       onClick={() => setMobileOpen(false)}
                       className={cn(
                         "flex items-center gap-3 rounded-xl text-sm font-medium transition-all duration-200 group relative",
-                        collapsed ? "justify-center p-3" : "px-3 py-2.5",
+                        isCollapsed ? "justify-center p-3" : "px-3 py-2.5",
                         isActive
                           ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400"
                           : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                       )}
                     >
                       <Icon className={cn("w-[18px] h-[18px] shrink-0", isActive && "text-blue-600 dark:text-blue-400")} />
-                      {!collapsed && (
+                      {!isCollapsed && (
                         <>
                           <span className="truncate">{item.label}</span>
                           {item.badge && (
@@ -111,7 +114,7 @@ export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: Side
                         </>
                       )}
                       {/* Tooltip for collapsed state */}
-                      {collapsed && (
+                      {isCollapsed && (
                         <div className="absolute left-full ml-2 px-2.5 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg">
                           {item.label}
                         </div>
@@ -130,7 +133,7 @@ export function Sidebar({ sections, roleLabel, roleColor = "bg-blue-600" }: Side
             onClick={toggle}
             className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
           >
-            <ChevronLeft className={cn("w-4 h-4 transition-transform duration-300", collapsed && "rotate-180")} />
+            <ChevronLeft className={cn("w-4 h-4 transition-transform duration-300", isCollapsed && "rotate-180")} />
           </button>
         </div>
       </aside>

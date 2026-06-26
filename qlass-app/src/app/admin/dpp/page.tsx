@@ -11,15 +11,19 @@ export default function AdminDPPPage() {
   const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState("");
 
   const filtered = useMemo(() => {
     return data.dpp.filter(d => {
       if (search && !d.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (classFilter && d.class !== classFilter) return false;
       if (subjectFilter && d.subject !== subjectFilter) return false;
+      if (statusFilter && d.status !== statusFilter) return false;
+      if (difficultyFilter && d.difficulty !== difficultyFilter) return false;
       return true;
     }).slice(0, 40);
-  }, [data.dpp, search, classFilter, subjectFilter]);
+  }, [data.dpp, search, classFilter, subjectFilter, statusFilter, difficultyFilter]);
 
   return (
     <div className="space-y-6">
@@ -44,14 +48,26 @@ export default function AdminDPPPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search DPP..." className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
           </div>
-          <select value={classFilter} onChange={e => setClassFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+          <select value={classFilter} onChange={e => setClassFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
             <option value="">All Classes</option>
             {["8A","8B","9A","9B","10A","10B"].map(c => <option key={c}>{c}</option>)}
           </select>
-          <select value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+          <select value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
             <option value="">All Subjects</option>
             {["Mathematics","Physics","Chemistry","English","Computer Science"].map(s => <option key={s}>{s}</option>)}
           </select>
+          <select value={difficultyFilter} onChange={e => setDifficultyFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Difficulties</option>
+            {["Easy","Medium","Hard"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Status</option>
+            {["Active","Pending"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          {(search || classFilter || subjectFilter || difficultyFilter || statusFilter) && (
+            <button onClick={() => { setSearch(""); setClassFilter(""); setSubjectFilter(""); setDifficultyFilter(""); setStatusFilter(""); }}
+              className="px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl font-bold transition-colors">Clear</button>
+          )}
         </div>
       </div>
 

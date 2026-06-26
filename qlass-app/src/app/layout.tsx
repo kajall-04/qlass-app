@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ClientProviders } from "@/components/ui/ClientProviders";
 
 export const metadata: Metadata = {
   title: "QLASS — Education ERP for Schools & Coaching",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
         {children}
+        <ClientProviders />
       </body>
     </html>
   );

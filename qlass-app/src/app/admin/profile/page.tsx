@@ -3,10 +3,21 @@
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/auth-store";
 import { getRoleLabel } from "@/services/auth.service";
-import { Mail, Phone, MapPin, Calendar, Shield, Award } from "lucide-react";
+import { useToastStore } from "@/store/toast-store";
+import { Mail, Phone, MapPin, Calendar, Shield, Award, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export default function AdminProfilePage() {
   const user = useAuthStore(s => s.user);
+  const { addToast } = useToastStore();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEdit = async () => {
+    if (isEditing) {
+      addToast({ type: "success", title: "Profile saved", message: "Your profile has been updated." });
+    }
+    setIsEditing(!isEditing);
+  };
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -56,8 +67,11 @@ export default function AdminProfilePage() {
       </motion.div>
 
       {/* Edit Button */}
-      <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-colors shadow-lg shadow-blue-500/25">
-        Edit Profile
+      <button 
+        onClick={handleEdit}
+        className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl transition-colors shadow-lg shadow-blue-500/25"
+      >
+        {isEditing ? "Save Changes" : "Edit Profile"}
       </button>
     </div>
   );

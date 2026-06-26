@@ -1,17 +1,51 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { getSeedData } from "@/data/seed";
 import { cn } from "@/lib/utils";
-import { BarChart3, TrendingUp, Users, BookOpen } from "lucide-react";
+import { BarChart3, TrendingUp, Users, BookOpen, Filter } from "lucide-react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from "recharts";
 
 export default function AdminReportsPage() {
   const data = useMemo(() => getSeedData(), []);
+  const [timeFilter, setTimeFilter] = useState("Last 6 Months");
+  const [classFilter, setClassFilter] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("");
+
+  // Simple mock logic to make charts react to filters
+  const filteredSubjectScores = useMemo(() => {
+    let scores = data.chartData.subjectScores;
+    if (subjectFilter) scores = scores.filter(s => s.name === subjectFilter || s.name.startsWith(subjectFilter.substring(0,4)));
+    return scores;
+  }, [data.chartData.subjectScores, subjectFilter]);
 
   return (
     <div className="space-y-6">
+      {/* Filters */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+        <div className="flex flex-wrap gap-3">
+          <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold text-slate-500">
+            <Filter className="w-4 h-4" /> Filters
+          </div>
+          <select value={timeFilter} onChange={e => setTimeFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+            {["Last 3 Months", "Last 6 Months", "This Year", "All Time"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          <select value={classFilter} onChange={e => setClassFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+            <option value="">All Classes</option>
+            {["Class 8", "Class 9", "Class 10"].map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+            <option value="">All Subjects</option>
+            {["Mathematics","Physics","Chemistry","Biology","English"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          {(classFilter || subjectFilter || timeFilter !== "Last 6 Months") && (
+            <button onClick={() => { setClassFilter(""); setSubjectFilter(""); setTimeFilter("Last 6 Months"); }}
+              className="px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl font-bold transition-colors">Clear</button>
+          )}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
@@ -34,7 +68,7 @@ export default function AdminReportsPage() {
           className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Subject-wise Average Scores</h3>
           <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={data.chartData.subjectScores}>
+            <BarChart data={filteredSubjectScores}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
               <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#94A3B8" }} />
               <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} />
@@ -60,10 +94,10 @@ export default function AdminReportsPage() {
             <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} domain={[70, 100]} />
             <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #E2E8F0", fontSize: 12 }} />
             <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-            <Area type="monotone" dataKey="Overall" stroke="#2563EB" strokeWidth={2.5} fill="url(#rpColorOverall)" />
-            <Area type="monotone" dataKey="Class 10" stroke="#8B5CF6" strokeWidth={2} fill="transparent" />
-            <Area type="monotone" dataKey="Class 9" stroke="#22C55E" strokeWidth={2} fill="transparent" />
-            <Area type="monotone" dataKey="Class 8" stroke="#F59E0B" strokeWidth={2} fill="transparent" />
+            {(!classFilter) && <Area type="monotone" dataKey="Overall" stroke="#2563EB" strokeWidth={2.5} fill="url(#rpColorOverall)" />}
+            {(!classFilter || classFilter === "Class 10") && <Area type="monotone" dataKey="Class 10" stroke="#8B5CF6" strokeWidth={2} fill={classFilter ? "url(#rpColorOverall)" : "transparent"} />}
+            {(!classFilter || classFilter === "Class 9") && <Area type="monotone" dataKey="Class 9" stroke="#22C55E" strokeWidth={2} fill={classFilter ? "url(#rpColorOverall)" : "transparent"} />}
+            {(!classFilter || classFilter === "Class 8") && <Area type="monotone" dataKey="Class 8" stroke="#F59E0B" strokeWidth={2} fill={classFilter ? "url(#rpColorOverall)" : "transparent"} />}
           </AreaChart>
         </ResponsiveContainer>
       </motion.div>

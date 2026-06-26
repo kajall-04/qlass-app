@@ -5,6 +5,8 @@ import { Sidebar, type NavSection } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { useSidebarStore } from "@/store/sidebar-store";
 import { cn } from "@/lib/utils";
+import { Chatbot } from "@/components/chatbot/Chatbot";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 import {
   LayoutDashboard, BookOpen, Layers, Video, FileText,
   ClipboardCheck, TrendingUp, CheckSquare, CalendarDays,
@@ -64,9 +66,14 @@ const pageTitles: Record<string, string> = {
 };
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
+  const { isChecking } = useAuthGuard("student");
   const pathname = usePathname();
   const collapsed = useSidebarStore((s) => s.collapsed);
   const title = pageTitles[pathname] || "Dashboard";
+
+  if (isChecking) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
@@ -75,6 +82,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       <main className={cn("pt-16 min-h-screen transition-all duration-300", collapsed ? "lg:pl-[72px]" : "lg:pl-[260px]")}>
         <div className="p-4 sm:p-6 max-w-[1400px] mx-auto">{children}</div>
       </main>
+      <Chatbot role="student" />
     </div>
   );
 }

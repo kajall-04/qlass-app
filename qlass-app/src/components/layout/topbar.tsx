@@ -5,6 +5,7 @@ import { Search, Bell, Moon, Sun, Menu, LogOut, User, Eye } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
 import { useSidebarStore } from "@/store/sidebar-store";
 import { useThemeStore } from "@/store/theme-store";
+import { useCommandPaletteStore } from "@/store/command-palette-store";
 import { getRoleLabel, getRoleDashboardPath } from "@/services/auth.service";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
@@ -18,8 +19,9 @@ export function Topbar({ title }: TopbarProps) {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const impersonate = useAuthStore((s) => s.impersonate);
-  const { collapsed, setMobileOpen } = useSidebarStore();
+  const { collapsed, setMobileOpen, toggle: toggleSidebar } = useSidebarStore();
   const { theme, toggle: toggleTheme } = useThemeStore();
+  const setCommandPaletteOpen = useCommandPaletteStore((s) => s.setOpen);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -61,26 +63,36 @@ export function Topbar({ title }: TopbarProps) {
         >
           <Menu className="w-5 h-5" />
         </button>
+        <button
+          onClick={toggleSidebar}
+          className="hidden lg:flex p-2 -ml-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
         <h1 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">{title}</h1>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-2">
         {/* Search */}
-        <div className="hidden sm:flex items-center relative">
+        <div 
+          className="hidden sm:flex items-center relative cursor-text"
+          onClick={() => setCommandPaletteOpen(true)}
+        >
           <Search className="absolute left-3 w-4 h-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search anything..."
-            className="w-56 pl-9 pr-12 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-          />
+          <div className="w-56 pl-9 pr-12 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-400 flex items-center hover:border-blue-500/50 transition-colors">
+            Search anything...
+          </div>
           <kbd className="absolute right-3 text-[10px] font-semibold text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-1.5 py-0.5 rounded">
             ⌘K
           </kbd>
         </div>
 
         {/* Notifications */}
-        <button className="relative p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors">
+        <button 
+          onClick={() => router.push(`/${user?.role || "admin"}/notifications`)}
+          className="relative p-2.5 rounded-xl hover:bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
+        >
           <Bell className="w-[18px] h-[18px]" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white dark:ring-slate-900" />
         </button>

@@ -1,12 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Moon, Sun, Globe, Bell, Shield, Palette, Monitor, Smartphone } from "lucide-react";
+import { Moon, Sun, Globe, Bell, Shield, Palette, Monitor, Smartphone, Check, Loader2 } from "lucide-react";
 import { useThemeStore } from "@/store/theme-store";
+import { useToastStore } from "@/store/toast-store";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 export default function AdminSettingsPage() {
   const { theme, toggle } = useThemeStore();
+  const { addToast } = useToastStore();
+  const [notifs, setNotifs] = useState<Record<string, boolean>>({
+    "Email Notifications": true,
+    "Push Notifications": true,
+    "DPP Alerts": false,
+    "Attendance Alerts": true,
+    "Test Results": true,
+  });
+  const [twoFactor, setTwoFactor] = useState(true);
+  const [loading, setLoading] = useState("");
+
+  const handleToggleNotif = (key: string) => {
+    setNotifs((p) => ({ ...p, [key]: !p[key] }));
+    addToast({ type: "success", title: "Settings updated", message: `${key} ${!notifs[key] ? "enabled" : "disabled"}` });
+  };
+
+  const handleChangePassword = async () => {
+    setLoading("password");
+    await new Promise(r => setTimeout(r, 1000));
+    setLoading("");
+    addToast({ type: "info", title: "Password Reset", message: "Password reset instructions sent to your email." });
+  };
+
+  const handleToggle2FA = async () => {
+    setLoading("2fa");
+    await new Promise(r => setTimeout(r, 1000));
+    setTwoFactor(!twoFactor);
+    setLoading("");
+    addToast({ type: "success", title: "2FA Updated", message: `Two-Factor Authentication is now ${!twoFactor ? "enabled" : "disabled"}.` });
+  };
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -30,10 +62,15 @@ export default function AdminSettingsPage() {
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4"><Bell className="w-5 h-5 text-blue-600" /><h3 className="text-base font-semibold text-slate-900 dark:text-white">Notifications</h3></div>
-        {["Email Notifications", "Push Notifications", "DPP Alerts", "Attendance Alerts", "Test Results"].map(item => (
+        {Object.entries(notifs).map(([item, enabled]) => (
           <div key={item} className="flex items-center justify-between py-3 border-b border-slate-50 dark:border-slate-800 last:border-0">
             <span className="text-sm text-slate-700 dark:text-slate-300">{item}</span>
-            <button className="w-10 h-6 rounded-full bg-blue-600 p-0.5 flex items-center justify-end"><div className="w-5 h-5 rounded-full bg-white shadow" /></button>
+            <button 
+              onClick={() => handleToggleNotif(item)}
+              className={cn("w-10 h-6 rounded-full p-0.5 flex items-center transition-colors", enabled ? "bg-blue-600 justify-end" : "bg-slate-300 dark:bg-slate-700 justify-start")}
+            >
+              <div className="w-5 h-5 rounded-full bg-white shadow" />
+            </button>
           </div>
         ))}
       </motion.div>
@@ -43,17 +80,36 @@ export default function AdminSettingsPage() {
         className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4"><Shield className="w-5 h-5 text-emerald-600" /><h3 className="text-base font-semibold text-slate-900 dark:text-white">Security</h3></div>
         <div className="space-y-4">
-          <button className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            <div className="text-sm font-medium text-slate-900 dark:text-white">Change Password</div>
-            <div className="text-xs text-slate-500">Last changed 30 days ago</div>
+          <button 
+            onClick={handleChangePassword}
+            disabled={loading === "password"}
+            className="w-full flex items-center justify-between text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+          >
+            <div>
+              <div className="text-sm font-medium text-slate-900 dark:text-white">Change Password</div>
+              <div className="text-xs text-slate-500">Last changed 30 days ago</div>
+            </div>
+            {loading === "password" && <Loader2 className="w-4 h-4 animate-spin text-slate-400" />}
           </button>
-          <button className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            <div className="text-sm font-medium text-slate-900 dark:text-white">Two-Factor Authentication</div>
-            <div className="text-xs text-emerald-600 font-medium">Enabled</div>
+          <button 
+            onClick={handleToggle2FA}
+            disabled={loading === "2fa"}
+            className="w-full flex items-center justify-between text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+          >
+            <div>
+              <div className="text-sm font-medium text-slate-900 dark:text-white">Two-Factor Authentication</div>
+              <div className={cn("text-xs font-medium", twoFactor ? "text-emerald-600" : "text-slate-500")}>
+                {twoFactor ? "Enabled" : "Disabled"}
+              </div>
+            </div>
+            {loading === "2fa" && <Loader2 className="w-4 h-4 animate-spin text-slate-400" />}
           </button>
-          <button className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+          <button 
+            onClick={() => addToast({ type: "success", title: "Sessions cleared", message: "All other sessions have been logged out." })}
+            className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
             <div className="text-sm font-medium text-slate-900 dark:text-white">Active Sessions</div>
-            <div className="text-xs text-slate-500">2 devices logged in</div>
+            <div className="text-xs text-slate-500">2 devices logged in (Click to sign out others)</div>
           </button>
         </div>
       </motion.div>

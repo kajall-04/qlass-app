@@ -9,16 +9,22 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 export default function AdminTestsPage() {
   const data = useMemo(() => getSeedData(), []);
+  const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
 
   const filtered = useMemo(() => {
     return data.tests.filter(t => {
+      if (search && !t.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (classFilter && t.class !== classFilter) return false;
       if (subjectFilter && t.subject !== subjectFilter) return false;
+      if (statusFilter && t.status !== statusFilter) return false;
+      if (typeFilter && t.type !== typeFilter) return false;
       return true;
     }).slice(0, 36);
-  }, [data.tests, classFilter, subjectFilter]);
+  }, [data.tests, search, classFilter, subjectFilter, statusFilter, typeFilter]);
 
   const avgPass = Math.round(data.tests.reduce((a, t) => a + t.passPercentage, 0) / data.tests.length);
 
@@ -47,15 +53,34 @@ export default function AdminTestsPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-wrap gap-3">
-        <select value={classFilter} onChange={e => setClassFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-          <option value="">All Classes</option>
-          {["8A","8B","9A","9B","10A","10B"].map(c => <option key={c}>{c}</option>)}
-        </select>
-        <select value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-          <option value="">All Subjects</option>
-          {["Mathematics","Physics","Chemistry","Biology","English","Computer Science"].map(s => <option key={s}>{s}</option>)}
-        </select>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
+        <div className="flex flex-wrap gap-3">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search tests..."
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
+          </div>
+          <select value={classFilter} onChange={e => setClassFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Classes</option>
+            {["8A","8B","9A","9B","10A","10B"].map(c => <option key={c}>{c}</option>)}
+          </select>
+          <select value={subjectFilter} onChange={e => setSubjectFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Subjects</option>
+            {["Mathematics","Physics","Chemistry","Biology","English","Computer Science"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Types</option>
+            {["Unit Test", "Monthly Exam", "Surprise Quiz", "Mid-Term"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none">
+            <option value="">All Status</option>
+            {["Completed","Upcoming"].map(s => <option key={s}>{s}</option>)}
+          </select>
+          {(search || classFilter || subjectFilter || typeFilter || statusFilter) && (
+            <button onClick={() => { setSearch(""); setClassFilter(""); setSubjectFilter(""); setTypeFilter(""); setStatusFilter(""); }}
+              className="px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl font-bold transition-colors">Clear</button>
+          )}
+        </div>
       </div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
