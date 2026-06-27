@@ -51,7 +51,7 @@ export function CompletionChart({ subjects, isLoading }: CompletionChartProps) {
                 cursor={{ fill: 'rgba(226, 232, 240, 0.4)' }}
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: '#fff', color: '#0f172a' }}
                 labelStyle={{ fontWeight: 'bold', color: '#0f172a', marginBottom: '4px' }}
-                formatter={(value: number) => [`${value}%`, 'Completion']}
+                formatter={(value: any) => [`${value}%`, 'Completion']}
                 labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName || label}
               />
               <Bar 
