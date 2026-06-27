@@ -30,8 +30,8 @@ const statusConfig: Record<ProgressStatus, { bg: string; text: string; dot: stri
   },
 };
 
-type SortField = "className" | "subject" | "syllabusProgress" | "courseProgress" | "lectureCompletion" | "status";
-type SortDir = "asc" | "desc";
+export type SortField = "className" | "subject" | "syllabusProgress" | "courseProgress" | "lectureCompletion" | "status";
+export type SortDir = "asc" | "desc";
 
 const PAGE_SIZE = 8;
 

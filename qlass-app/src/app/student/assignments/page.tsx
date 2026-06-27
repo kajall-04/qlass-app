@@ -1,37 +1,102 @@
 "use client";
-import { useMemo } from "react";
-import { getSeedData } from "@/data/seed";
-import { ClipboardCheck, Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-export default function StudentAssignmentsPage() {
-  const data = useMemo(() => getSeedData(), []);
-  const student = data.students[0];
-  const assignments = data.dpp.filter(d => d.class === student.class);
+import { useState, useEffect } from "react";
+import { fetchPracticeData } from "./services/mockApi";
+import type { TaskItem, PracticeFilters } from "./types";
+import { AlertCircle, RefreshCcw } from "lucide-react";
+
+import { FilterBar } from "./components/FilterBar";
+import { UrgentTaskBanner } from "./components/UrgentTaskBanner";
+import { TaskFeedGrid } from "./components/TaskFeedGrid";
+
+export default function PracticeWorkspace() {
+  const [filters, setFilters] = useState<PracticeFilters>({
+    search: "",
+    view: "All",
+    status: "All",
+    subject: "All Subjects",
+  });
+  
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setIsLoading(true);
+    setError(null);
+
+    fetchPracticeData(filters)
+      .then((res) => {
+        if (mounted) {
+          setTasks(res);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (mounted) {
+          console.error("Failed to fetch practice data:", err);
+          setError("Failed to load your workspace. Please try again.");
+          setIsLoading(false);
+        }
+      });
+      
+    return () => { mounted = false; };
+  }, [filters]);
+
+  const handleRetry = () => {
+    setFilters({ ...filters }); 
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Assignments</h2>
-      </div>
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
-        <div className="space-y-4">
-          {assignments.map(a => (
-            <div key={a.id} className="flex items-start gap-4 p-4 border border-slate-100 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", a.status === "Active" ? "bg-amber-100 text-amber-600" : "bg-emerald-100 text-emerald-600")}>
-                {a.status === "Active" ? <Clock className="w-5 h-5" /> : <ClipboardCheck className="w-5 h-5" />}
-              </div>
-              <div className="flex-1">
-                <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{a.name}</h4>
-                <p className="text-xs text-slate-500 mt-1">{a.subject} · Due: {a.dueDate}</p>
-              </div>
-              <button className={cn("px-4 py-2 rounded-lg text-sm font-semibold transition-colors", a.status === "Active" ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-slate-100 text-slate-600")}>
-                {a.status === "Active" ? "Submit" : "View"}
-              </button>
-            </div>
-          ))}
+    <div className="max-w-7xl mx-auto space-y-10 pb-20 animate-in fade-in duration-500">
+      
+      {/* Header & Sticky Filter Bar */}
+      <section className="space-y-6">
+        <div className="px-4 sm:px-6 lg:px-8 pt-4">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
+            Practice & Assignments
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm max-w-2xl">
+            Your centralized workspace for daily problems and weekly assignments.
+          </p>
         </div>
+        <FilterBar filters={filters} setFilters={setFilters} isLoading={isLoading} />
+      </section>
+
+      {/* Main Content Area */}
+      <div className="px-4 sm:px-6 lg:px-8 space-y-12">
+        {error && !isLoading ? (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-10 flex flex-col items-center justify-center text-center space-y-4">
+            <AlertCircle className="w-10 h-10 text-red-500" />
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Something went wrong</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">{error}</p>
+            </div>
+            <button 
+              onClick={handleRetry}
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+            >
+              <RefreshCcw className="w-4 h-4" /> Try Again
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Urgent Task Banner */}
+            {!isLoading && tasks.length > 0 && (
+              <section className="animate-in slide-in-from-bottom-4 duration-500">
+                <UrgentTaskBanner tasks={tasks} />
+              </section>
+            )}
+
+            {/* Unified Feed */}
+            <section className="animate-in slide-in-from-bottom-8 duration-700">
+              <TaskFeedGrid tasks={tasks} isLoading={isLoading} />
+            </section>
+          </>
+        )}
       </div>
+
     </div>
   );
 }

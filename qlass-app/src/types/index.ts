@@ -15,6 +15,19 @@ export interface Lecture {
   topicCoverage: number;
   studentAttendance: number;
   notes: string;
+  thumbnail: string;
+  chapter: string;
+  views: number;
+  progress: number;
+  watchStatus: "Watched" | "In Progress" | "Not Watched";
+  hasAiSummary: boolean;
+  hasDpp: boolean;
+  hasNotes: boolean;
+  isBookmarked: boolean;
+  isDownloaded: boolean;
+  lastWatched?: string;
+  uploadDate: string;
+  remainingTime?: string;
 }
 
 export interface DPP {

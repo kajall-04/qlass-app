@@ -255,6 +255,10 @@ function generateLectures(teachers: Teacher[]): Lecture[] {
         const month = randomBetween(1, 6);
         const day = randomBetween(1, 28);
         const completed = month < 6 || (month === 6 && day < 20);
+        const isWatched = Math.random() > 0.4;
+        const watchStatus = !completed ? "Not Watched" : isWatched ? "Watched" : Math.random() > 0.5 ? "In Progress" : "Not Watched";
+        const progress = watchStatus === "Watched" ? 100 : watchStatus === "In Progress" ? randomBetween(10, 90) : 0;
+        
         lectures.push({
           id: `LEC-${String(id++).padStart(4, "0")}`,
           title: topic,
@@ -264,7 +268,7 @@ function generateLectures(teachers: Teacher[]): Lecture[] {
           class: cls,
           date: `2026-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
           time: pickRandom(periodTimes),
-          duration: `${randomBetween(35, 55)} min`,
+          duration: `${randomBetween(35, 55)}m`,
           room: pickRandom(rooms),
           status: completed ? "Completed" : "Upcoming",
           hasRecording: completed ? Math.random() > 0.15 : false,
@@ -272,6 +276,19 @@ function generateLectures(teachers: Teacher[]): Lecture[] {
           topicCoverage: completed ? randomBetween(70, 100) : 0,
           studentAttendance: completed ? randomBetween(65, 100) : 0,
           notes: completed ? "Lecture completed. Key concepts covered." : "",
+          thumbnail: `https://picsum.photos/seed/${subject.replace(/ /g, '')}${topic.replace(/ /g, '')}/600/400`,
+          chapter: `Chapter ${randomBetween(1, 10)}`,
+          views: completed ? randomBetween(10, 1200) : 0,
+          progress,
+          watchStatus,
+          hasAiSummary: completed ? Math.random() > 0.3 : false,
+          hasDpp: completed ? Math.random() > 0.4 : false,
+          hasNotes: completed ? Math.random() > 0.2 : false,
+          isBookmarked: completed ? Math.random() > 0.8 : false,
+          isDownloaded: completed ? Math.random() > 0.9 : false,
+          lastWatched: watchStatus !== "Not Watched" ? `2026-06-${String(randomBetween(1, 28)).padStart(2, '0')}` : undefined,
+          uploadDate: `2026-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
+          remainingTime: watchStatus === "In Progress" ? `${randomBetween(5, 30)}m left` : undefined,
         });
       });
     });

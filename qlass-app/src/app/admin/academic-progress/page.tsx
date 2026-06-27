@@ -19,7 +19,7 @@ const statusConfig: Record<string, { bg: string; text: string; dot: string }> = 
 const PAGE_SIZE = 15;
 
 export default function DetailedAcademicProgressPage() {
-  const data = useMemo(() => getDashboardData({}).academicProgress, []);
+  const data = useMemo(() => getDashboardData({ classFilter: "", subjectFilter: "", timePeriod: "this_year" }).academicProgress, []);
   
   const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState("");

@@ -1,69 +1,127 @@
 "use client";
-import { useMemo } from "react";
-import { getSeedData } from "@/data/seed";
-import { cn } from "@/lib/utils";
-import { BookOpen, Users, CheckCircle2, Clock } from "lucide-react";
+
+import { useState, useEffect } from "react";
+import { FilterBar } from "./components/FilterBar";
+import { SummaryCards } from "./components/SummaryCards";
+import { SubjectsTable } from "./components/SubjectsTable";
+import { CompletionChart } from "./components/CompletionChart";
+import { OverallProgressCard } from "./components/OverallProgressCard";
+import { SubjectCardsGrid } from "./components/SubjectCardsGrid";
+import { fetchClassData } from "./services/mockApi";
+import type { MyClassesData, CourseFilterState } from "./types";
+import { AlertCircle, RefreshCcw } from "lucide-react";
 
 export default function StudentClassesPage() {
-  const data = useMemo(() => getSeedData(), []);
-  const student = data.students[0];
-  const myClass = data.getClassByName(student.class);
+  const [filters, setFilters] = useState<CourseFilterState>({
+    search: "",
+    academicYear: "2024-25",
+    subject: "All Subjects",
+    teacher: "All Teachers",
+    status: "All",
+    sortBy: "Subject Name"
+  });
+  
+  const [data, setData] = useState<MyClassesData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setIsLoading(true);
+    setError(null);
+
+    fetchClassData(filters)
+      .then((res) => {
+        if (mounted) {
+          setData(res);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (mounted) {
+          console.error("Failed to fetch class data:", err);
+          setError("Failed to load classes data. Please try again.");
+          setIsLoading(false);
+        }
+      });
+      
+    return () => { mounted = false; };
+  }, [filters]);
+
+  const handleRetry = () => {
+    setFilters({ ...filters }); // Trigger re-fetch
+  };
 
   return (
-    <div className="space-y-6">
-      {myClass && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-14 h-14 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-              <span className="text-xl font-bold text-emerald-700 dark:text-emerald-400">{myClass.fullName}</span>
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">{myClass.name} — Section {myClass.section}</h2>
-              <p className="text-sm text-slate-500">Class Teacher: {myClass.classTeacher} · {myClass.room}</p>
-            </div>
+    <div className="max-w-[1920px] mx-auto space-y-8 pb-12 animate-in fade-in duration-500 px-4 sm:px-6 lg:px-8">
+      
+      {/* Page Header */}
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+          My Classes / Courses
+        </h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          View your enrolled class, subjects, teachers and academic progress.
+        </p>
+      </div>
+
+      {/* Filter Bar */}
+      <FilterBar filters={filters} setFilters={setFilters} isLoading={isLoading} />
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-4">
+          <AlertCircle className="w-10 h-10 text-red-500" />
+          <div>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Something went wrong</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">{error}</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {[
-              { icon: Users, label: "Classmates", value: myClass.totalStudents, color: "text-blue-600" },
-              { icon: CheckCircle2, label: "Attendance", value: `${myClass.attendance}%`, color: "text-emerald-600" },
-              { icon: BookOpen, label: "Syllabus", value: `${myClass.syllabusProgress}%`, color: "text-violet-600" },
-              { icon: Clock, label: "Performance", value: myClass.performance, color: "text-amber-600" },
-            ].map(s => (
-              <div key={s.label} className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-3">
-                <div className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{s.label}</div>
-                <div className={cn("text-lg font-bold", s.color)}>{s.value}</div>
-              </div>
-            ))}
-          </div>
+          <button 
+            onClick={handleRetry}
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+          >
+            <RefreshCcw className="w-4 h-4" /> Try Again
+          </button>
         </div>
       )}
 
-      {/* Timetable */}
-      {myClass && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Weekly Timetable</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead><tr className="border-b border-slate-100 dark:border-slate-800">
-                <th className="text-left text-xs font-semibold text-slate-500 px-3 py-2">Day</th>
-                {myClass.timetable[0]?.periods.slice(0, 6).map((_, i) => <th key={i} className="text-left text-xs font-semibold text-slate-500 px-3 py-2">Period {i + 1}</th>)}
-              </tr></thead>
-              <tbody>
-                {myClass.timetable.map(day => (
-                  <tr key={day.day} className="border-b border-slate-50 dark:border-slate-800/50">
-                    <td className="px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white">{day.day}</td>
-                    {day.periods.slice(0, 6).map((p, pi) => (
-                      <td key={pi} className="px-3 py-2.5">
-                        <div className="text-xs font-medium text-slate-700 dark:text-slate-300">{p.subject}</div>
-                        <div className="text-[10px] text-slate-400">{p.teacher.split(" ").pop()}</div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {!error && (
+        <>
+          {/* Section 1: Summary Cards */}
+          <section>
+            <SummaryCards summary={data?.summary} isLoading={isLoading} />
+          </section>
+
+          {/* Middle Row: Chart & Overall Progress */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <section className="lg:col-span-2">
+              <CompletionChart subjects={data?.subjects || []} isLoading={isLoading} />
+            </section>
+            <section className="lg:col-span-1">
+              <OverallProgressCard progress={data?.overallProgress} isLoading={isLoading} />
+            </section>
           </div>
-        </div>
+
+          {/* Section 2: Subjects Overview Table */}
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Subjects Overview</h2>
+            <div className="hidden md:block">
+              <SubjectsTable subjects={data?.subjects || []} isLoading={isLoading} />
+            </div>
+            
+            {/* Show grid on mobile/tablet instead of table if preferred, or just let table handle it.
+                Given the requirement "Tables become cards on mobile", we can show SubjectCardsGrid on small screens and SubjectsTable on large screens. */}
+            <div className="block md:hidden">
+              <SubjectCardsGrid subjects={data?.subjects || []} isLoading={isLoading} />
+            </div>
+          </section>
+
+          {/* Section 5: Subject Cards (Detailed Grid) */}
+          <section className="space-y-4 hidden md:block">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8">Subject Cards</h2>
+            <SubjectCardsGrid subjects={data?.subjects || []} isLoading={isLoading} />
+          </section>
+        </>
       )}
     </div>
   );
