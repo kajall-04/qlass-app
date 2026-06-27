@@ -32,7 +32,7 @@ function ChartWidget({ title, data, linkText, color, delay }: { title: string; d
             <Tooltip 
               contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: '12px', fontWeight: 600 }}
               itemStyle={{ color: '#1e293b' }}
-              formatter={(val: number) => [`${val}%`, 'Score']}
+              formatter={(val: any) => [`${val}%`, 'Score']}
             />
             <Area type="monotone" dataKey="value" stroke={color} strokeWidth={3} fill={`url(#color-${title.replace(/\s+/g, '')})`} activeDot={{ r: 6, strokeWidth: 0, fill: color }} />
           </AreaChart>

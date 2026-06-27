@@ -114,7 +114,7 @@ export function LectureCard({ lecture, view = "grid", onClick }: LectureCardProp
 
           {/* Quick Actions (only really visible in List view or on hover in Grid if space permits, but we'll show watch status icon) */}
           <div className="flex items-center gap-2">
-            {isCompleted && <CheckCircle2 className="w-5 h-5 text-emerald-500" title="Watched" />}
+            {isCompleted && <span title="Watched"><CheckCircle2 className="w-5 h-5 text-emerald-500" /></span>}
             {isList && (
               <div className="hidden sm:flex gap-2">
                 <button className="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg transition-colors">
